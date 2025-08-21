@@ -1,63 +1,27 @@
 
-import css from './App.module.css'
-import { useState } from 'react'
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { fetchNotes, NoteData } from '../../services/noteService';
-import { useDebouncedCallback } from "use-debounce";
+import { fetchNotes } from "@/lib/api";
+import Link from "next/link";
+import css from "./Notes.module.css";
 
-import SearchBox from '../SearchBox/SearchBox'
-import Pagination from '../Pagination/Pagination'
-import NoteList from "../NoteList/NoteList"
-import NoteForm from '../NoteForm/NoteForm';
-import Modal from '../Modal/Modal'
-
-export default function App() {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false)
-
-    const [inputValue, setInputValue] = useState<string>("");
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const debouncedSetSearchQuery = useDebouncedCallback((value: string) => {
-        setSearchQuery(value);
-        setCurrentPage(1);
-    }, 300);
-
-    const { data } = useQuery<NoteData>({
-        queryKey: ["notes", currentPage, searchQuery],
-        queryFn: () => fetchNotes(currentPage, searchQuery),
-        placeholderData: keepPreviousData,
-    })
-
-    const totalPages = data?.totalPages || 0;
+export default async function NotesPage() {
+    const notes = await fetchNotes();
 
     return (
-        <>
-            <div className={css.app}>
-                <header className={css.toolbar}>
-                    <SearchBox text={inputValue}
-                        onChange={(value) => {
-                            setInputValue(value);
-                            debouncedSetSearchQuery(value);
-                        }}
-                    />
-                    {totalPages > 1 &&
-                        <Pagination
-                            totalPages={totalPages}
-                            currentPage={currentPage}
-                            onPageChange={setCurrentPage}
-                        />
-                    }
-                    <button className={css.button} onClick={openModal}>Create note +</button>
-                </header>
-                {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
-                {isModalOpen && (
-                    < Modal onClose={closeModal}>
-                        <NoteForm onSuccess={closeModal} />
-                    </Modal>
-                )}
-            </div >
-        </>
-    )
+        <div>
+            <h1>Notes page</h1>
+            <ul className={css.list}>
+                {notes.map((note) => (
+                    <li className={css.listItem} key={note.id}>
+                        <h2 className={css.title}>{note.title}</h2>
+                        <p className={css.content}>{note.content}</p>
+                        <div className={css.footer}>
+                            <span className={css.tag}>{note.tag}</span>
+                            <button className={css.button}>Delete</button>
+                        </div>
+                        {/* <Link href={`/notes/${note.id}`}>{note.title}</Link> */}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }

@@ -15,7 +15,7 @@ export default function Header() {
                         <Link href="/">Home</Link>
                     </li>
                     <li>
-                        <Link href="/notes">Notes</Link>
+                        <Link href="/Notes">Notes</Link>
                     </li>
                 </ul>
             </nav>
@@ -23,5 +23,3 @@ export default function Header() {
 
     )
 }
-
-//types/note.ts

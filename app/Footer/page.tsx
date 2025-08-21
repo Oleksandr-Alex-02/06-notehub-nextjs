@@ -10,7 +10,7 @@ export default function Footer() {
                     <p>Developer: Oleksandr</p>
                     <p>
                         Contact us:
-                        <a href="https://github.com/Oleksandr-Alex-02">student@notehub.app</a>
+                        <a href="https://github.com/goitacademy/react-notehub-styles/tree/hw-06/styles">student@notehub.app</a>
                     </p>
                 </div>
             </div>
