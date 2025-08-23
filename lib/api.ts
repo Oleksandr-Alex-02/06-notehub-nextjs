@@ -24,6 +24,19 @@ export const getdNotes = async (): Promise<NoteData> => {
     return res.data;
 };
 
+export const getNoteId = async (id: string) => {
+    const res = await axios.get<Note>(`/notes/${id}`,
+        {
+            headers: {
+                accept: "application/json",
+                Authorization: `Bearer ${NOTEHUB_TOKEN}`,
+            }
+        }
+    );
+    return res.data;
+};
+
+
 
 export const getNotes = async (page: number = 1, query: string = ""): Promise<NoteData> => {
     const res = await axios.get<NoteData>(

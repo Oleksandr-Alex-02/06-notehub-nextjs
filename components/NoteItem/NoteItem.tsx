@@ -1,3 +1,5 @@
+
+import Link from "next/link";
 import { Note } from "@/types/note";
 import css from "./NoteItem.module.css"
 
@@ -14,7 +16,7 @@ export default function NoteItem({ item }: Props) {
                 <span className={css.tag}>{item.tag}</span>
                 <button className={css.button}>Delete</button>
             </div>
-            {/* <Link href={`/notes/${note.id}`}>{note.title}</Link> */}
+            <Link href={`/notes/${item.id}`}>{item.title}</Link>
         </li>
     )
 }
