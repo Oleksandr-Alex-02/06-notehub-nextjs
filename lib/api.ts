@@ -37,13 +37,12 @@ export const getNoteId = async (id: string) => {
 };
 
 
-
 export const getNotes = async (page: number = 1, query: string = ""): Promise<NoteData> => {
     const res = await axios.get<NoteData>(
         "/notes", {
         params: {
             page,
-            query,
+            search: query,
         },
         headers: {
             accept: "application/json",

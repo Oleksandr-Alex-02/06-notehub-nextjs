@@ -1,10 +1,9 @@
-
 'use client';
 
 import css from './page.module.css'
 import { useState } from 'react'
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { getNotes, getdNotes, NoteData } from '@/lib/api';
+import { getNotes, NoteData } from '@/lib/api';
 import { useDebouncedCallback } from "use-debounce";
 
 import SearchBox from '@/components/SearchBox/SearchBox'
@@ -26,20 +25,14 @@ export default function Notes() {
         setCurrentPage(1);
     }, 300);
 
-    // const { data } = useQuery<NoteData>({
-    //     queryKey: ["notes", currentPage, searchQuery],
-    //     queryFn: () => getNotes(currentPage, searchQuery),
-    //     placeholderData: keepPreviousData,
-    // })
-
     const { data } = useQuery<NoteData>({
         queryKey: ["notes", currentPage, searchQuery],
-        queryFn: () => getdNotes(),
+        queryFn: () => getNotes(currentPage, searchQuery),
         placeholderData: keepPreviousData,
     })
 
     const totalPages = data?.totalPages || 0;
-
+    console.log(currentPage)
     return (
         <>
             <div className={css.app}>
