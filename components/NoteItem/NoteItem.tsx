@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Note } from "@/types/note";
 import css from "./NoteItem.module.css"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteNote } from "@/lib/api";
+import { fetchNoteById } from "@/lib/api";
 
 type Props = {
     item: Note;
@@ -12,7 +12,7 @@ type Props = {
 export default function NoteItem({ item }: Props) {
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: () => deleteNote(item.id),
+        mutationFn: () => fetchNoteById(item.id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
         },
@@ -24,16 +24,9 @@ export default function NoteItem({ item }: Props) {
             <p className={css.content}>{item.content}</p>
             <div className={css.footer}>
                 <span className={css.tag}>{item.tag}</span>
-                {/* <button className={css.button}>Delete</button> */}
-                <button
-                    className={css.button}
-                    onClick={() => mutation.mutate()}
-                    disabled={mutation.isLoading}
-                >
-                    {mutation.isLoading ? "Deleting..." : "Delete"}
-                </button>
+                <Link href={`/Notes/${item.id}`}>View details</Link>
+                <button className={css.button} onClick={() => mutation.mutate()} >Delete</button>
             </div>
-            <Link href={`/notes/${item.id}`}>{item.title}</Link>
         </li>
     )
 }

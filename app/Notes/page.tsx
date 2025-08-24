@@ -32,7 +32,7 @@ export default function Notes() {
     })
 
     const totalPages = data?.totalPages || 0;
-    console.log(currentPage)
+
     return (
         <>
             <div className={css.app}>

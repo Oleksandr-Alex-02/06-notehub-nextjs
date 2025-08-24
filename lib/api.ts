@@ -24,7 +24,8 @@ export const getdNotes = async (): Promise<NoteData> => {
     return res.data;
 };
 
-export const getNoteId = async (id: string) => {
+
+export const fetchNoteById = async (id: string) => {
     const res = await axios.get<Note>(`/notes/${id}`,
         {
             headers: {
