@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import { Note, NoteFormType } from "@/types/note";
+import { Note, } from "@/types/note";
 
 export interface NoteData {
     notes: Note[];
@@ -11,12 +11,14 @@ const NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
+//currentPage: number, searchQuery: string
 
-export const getdNotes = async (searchText: string): Promise<Note[]> => {
+export const fetchNotes = async () => {
     const res = await axios.get<Note[]>(
         "/notes", {
         params: {
-            search: searchText,
+            // search: searchQuery,
+            // page: currentPage,
         },
         headers: {
             accept: "application/json",
@@ -27,51 +29,10 @@ export const getdNotes = async (searchText: string): Promise<Note[]> => {
     return res.data;
 };
 
-// export const fetchTasks = async (searchText: string) => {
-//     const res = await axios.get(
-//         "https://62584f320c918296a49543e7.mockapi.io/tasks",
-//         {
-//             params: {
-//                 search: searchText,
-//             },
-//         }
-//     );
-//     return res.data;
-// };
-
-
-export const fetchNoteById = async (id: string) => {
-    const res = await axios.get<Note>(`/notes/${id}`,
-        {
-            headers: {
-                accept: "application/json",
-                Authorization: `Bearer ${NOTEHUB_TOKEN}`,
-            }
-        }
-    );
-    return res.data;
-};
-
-
-export const getNotes = async (page: number = 1, query: string = ""): Promise<NoteData> => {
-    const res = await axios.get<NoteData>(
-        "/notes", {
-        params: {
-            page,
-            search: query,
-        },
-        headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${NOTEHUB_TOKEN}`,
-        }
-    }
-    );
-    return res.data;
-};
-
-export const deleteNote = async (id: string) => {
-    const res = await axios.delete<Note[]>(
+export const getIdNotes = async (id: string) => {
+    const res = await axios.get<Note>(
         `/notes/${id}`, {
+
         headers: {
             accept: "application/json",
             Authorization: `Bearer ${NOTEHUB_TOKEN}`,
@@ -79,39 +40,4 @@ export const deleteNote = async (id: string) => {
     }
     );
     return res.data;
-}
-
-export const createNote = async (noteData: NoteFormType) => {
-    const res = await axios.post<Note>(
-        "/notes", noteData, {
-        headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${NOTEHUB_TOKEN}`,
-        }
-    }
-    );
-    return res.data;
-}
-
-// interface NoteUpdate {
-//     id: string;
-//     title: string,
-//     content: string,
-//     tag: string,
-// }
-
-// export const patchNote = async (noteUpdate: NoteUpdate) => {
-//     const res = await axios.patch<NoteData>(
-//         `/notes/${noteUpdate.id}`, {
-//         params: {
-//             title: noteUpdate.title,
-//             content: noteUpdate.content,
-//             tag: noteUpdate.tag,
-//         },
-//         headers: {
-//             accept: "application/json",
-//             Authorization: `Bearer ${NOTEHUB_TOKEN}`,
-//         }
-//     });
-//     return res.data;
-// }
+};

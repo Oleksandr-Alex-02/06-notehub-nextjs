@@ -1,15 +1,12 @@
 
-// import Link from 'next/link';
-import { fetchNoteById } from '@/lib/api';
 import css from './NoteDetails.module.css';
+import { Note } from "@/types/note"
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const note = await fetchNoteById(params.id);
+interface NoteDetailsProps {
+    note: Note;
+}
 
-    if (!note) {
-        return <div className={css.notFound}>Нотатку не знайдено</div>;
-    }
-
+export default function NoteDetails({ note }: NoteDetailsProps) {
     return (
         <div className={css.container}>
             <div className={css.item}>
@@ -17,8 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <h2>{note.title}</h2>
                 </div>
                 <p className={css.content}>{note.content}</p>
-                {/* <Link href="/Notes">Notes</Link> */}
-                <p className={css.date}>{new Date(note.createdAt).toLocaleString()}</p>
+                <p className={css.date}>{note.createdAt}</p>
             </div>
         </div>
 
