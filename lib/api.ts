@@ -12,9 +12,12 @@ const NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
 
-export const getdNotes = async (): Promise<NoteData> => {
-    const res = await axios.get<NoteData>(
+export const getdNotes = async (searchText: string): Promise<Note[]> => {
+    const res = await axios.get<Note[]>(
         "/notes", {
+        params: {
+            search: searchText,
+        },
         headers: {
             accept: "application/json",
             Authorization: `Bearer ${NOTEHUB_TOKEN}`,
@@ -23,6 +26,18 @@ export const getdNotes = async (): Promise<NoteData> => {
     );
     return res.data;
 };
+
+// export const fetchTasks = async (searchText: string) => {
+//     const res = await axios.get(
+//         "https://62584f320c918296a49543e7.mockapi.io/tasks",
+//         {
+//             params: {
+//                 search: searchText,
+//             },
+//         }
+//     );
+//     return res.data;
+// };
 
 
 export const fetchNoteById = async (id: string) => {
@@ -54,9 +69,9 @@ export const getNotes = async (page: number = 1, query: string = ""): Promise<No
     return res.data;
 };
 
-export const deleteNote = async (noteId: string) => {
-    const res = await axios.delete<Note>(
-        `/notes/${noteId}`, {
+export const deleteNote = async (id: string) => {
+    const res = await axios.delete<Note[]>(
+        `/notes/${id}`, {
         headers: {
             accept: "application/json",
             Authorization: `Bearer ${NOTEHUB_TOKEN}`,
