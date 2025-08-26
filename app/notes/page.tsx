@@ -9,7 +9,7 @@ export default async function App() {
 
     await queryClient.prefetchQuery({
         queryKey: ["notes", "", 1],
-        queryFn: () => fetchNotes(),
+        queryFn: () => fetchNotes(1, ""),
     })
 
     return (
