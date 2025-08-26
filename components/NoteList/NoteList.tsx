@@ -3,33 +3,18 @@
 import Link from "next/link";
 import css from "./NoteList.module.css";
 
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDebouncedCallback } from "use-debounce";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { fetchNotes, deleteNote } from "@/lib/api";
+import { deleteNote } from "@/lib/api";
 import { Note } from "@/types/note";
 
 
-type Props = {
+type NoteListProps = {
     notes: Note[];
-    // id: Note['id'];
 };
 
-export default function NoteList({ notes }: Props) {
+export default function NoteList({ notes }: NoteListProps) {
     const queryClient = useQueryClient();
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const debouncedSetSearchQuery = useDebouncedCallback((value: string) => {
-        setSearchQuery(value);
-        setCurrentPage(1);
-    }, 300);
-
-    const { data } = useQuery({
-        queryKey: ["notes", { search: searchQuery }],
-        queryFn: () => fetchNotes(currentPage, searchQuery),
-        refetchOnMount: false,
-    });
 
     const mutation = useMutation({
         mutationFn: deleteNote,

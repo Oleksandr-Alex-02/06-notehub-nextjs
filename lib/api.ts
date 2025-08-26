@@ -7,11 +7,8 @@ export interface NoteData {
     totalPages: number;
 }
 
-
 const NOTEHUB_TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
-
 
 export const fetchNotes = async (currentPage: number, searchQuery: string) => {
     const res = await axios.get<NoteData>(
