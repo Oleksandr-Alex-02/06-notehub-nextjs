@@ -10,12 +10,20 @@ import { Note } from "@/types/note"
 export default function NoteDetailsClient() {
     const { id } = useParams<{ id: string }>()
 
-    const { data } = useQuery<Note>({
-        queryKey: ["notes", id],
+    const { data, isLoading, error } = useQuery<Note>({
+        queryKey: ["notes", { id }],
         queryFn: () => getIdNotes(id),
         placeholderData: keepPreviousData,
         refetchOnMount: false,
-    })
+    });
+
+    if (isLoading) {
+        return <p>Loading, please wait...</p>;
+    }
+
+    if (error || !data) {
+        return <p>Something went wrong.</p>;
+    }
 
     return (
         <div className={css.container}>
