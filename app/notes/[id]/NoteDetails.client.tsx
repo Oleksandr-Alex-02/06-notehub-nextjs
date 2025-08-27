@@ -7,13 +7,14 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getIdNotes } from '@/lib/api';
 import { Note } from "@/types/note"
 
-export default function NoteDetails() {
+export default function NoteDetailsClient() {
     const { id } = useParams<{ id: string }>()
 
     const { data } = useQuery<Note>({
         queryKey: ["notes", id],
         queryFn: () => getIdNotes(id),
         placeholderData: keepPreviousData,
+        refetchOnMount: false,
     })
 
     return (
